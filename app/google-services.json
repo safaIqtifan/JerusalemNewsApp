@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "647453657072",
+    "project_id": "jerusalemnews-app",
+    "storage_bucket": "jerusalemnews-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647453657072:android:f942de0a548d116cefff35",
+        "android_client_info": {
+          "package_name": "com.example.jerusalemnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647453657072-okpehpjp2sobcvefglcrhe8rf7t6urbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlnJcUN3cf50HRHna-zR1Q58gUkIpYXAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647453657072-okpehpjp2sobcvefglcrhe8rf7t6urbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647453657072:android:42f96b7b76d3c328efff35",
+        "android_client_info": {
+          "package_name": "com.example.jerusalemnewsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647453657072-okpehpjp2sobcvefglcrhe8rf7t6urbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlnJcUN3cf50HRHna-zR1Q58gUkIpYXAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647453657072-okpehpjp2sobcvefglcrhe8rf7t6urbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
