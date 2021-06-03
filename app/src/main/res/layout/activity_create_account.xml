@@ -1,9 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateAccount">
+    tools:context=".CreateAccount"
+    android:gravity="center"
+    android:background="@drawable/cc"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/nameEd"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/box1"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:padding="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"/>
+
+    <EditText
+        android:id="@+id/emailEd"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/box1"
+        android:hint="Email"
+        android:layout_marginTop="20dp"
+        android:inputType="textEmailAddress"
+        android:padding="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"/>
+
+    <EditText
+        android:id="@+id/passwordEd"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/box1"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <android.widget.Button
+            android:id="@+id/loginbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:layout_weight="1"
+            android:background="@drawable/buttonlogin"
+            android:text="Login"
+            android:textSize="16sp"
+            android:textAllCaps="false"/>
+
+        <android.widget.Button
+            android:id="@+id/creatbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:layout_weight="1"
+            android:background="@drawable/buttonlogin"
+            android:text="Create Account"
+            android:textSize="18sp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="74dp"
+        android:layout_height="69dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:visibility="gone" />
+
+
+</LinearLayout>
