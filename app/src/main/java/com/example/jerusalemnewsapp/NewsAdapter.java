@@ -17,9 +17,9 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
     Context context;
-    List<NewsModel> list;
+    List<ArticlesModel> list;
 
-    public NewsAdapter(Context context, List<NewsModel> newsList) {
+    public NewsAdapter(Context context, List<ArticlesModel> newsList) {
         this.context = context;
         this.list = newsList;
     }
@@ -38,12 +38,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
 
-        NewsModel farmModel = list.get(position);
+        ArticlesModel articlesModel = list.get(position);
 
-        holder.title.setText(NewsModel.title);
-        holder.describction.setText(NewsModel.describction);
+        holder.title.setText(articlesModel.title);
+        holder.describction.setText(articlesModel.description);
 
-        Glide.with(context).asBitmap().load(farmModel.photo).placeholder(R.drawable.camera).into(holder.post_photo);
+        Glide.with(context).asBitmap().load(articlesModel.urlToImage).placeholder(R.drawable.camera).into(holder.post_photo);
 
 
     }
