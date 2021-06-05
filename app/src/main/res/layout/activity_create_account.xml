@@ -18,7 +18,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/box1"
-        android:hint="Email"
+        android:hint="Name"
         android:inputType="textEmailAddress"
         android:padding="20dp"
         android:textSize="18sp"

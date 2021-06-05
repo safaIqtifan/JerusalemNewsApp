@@ -5,9 +5,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -15,20 +17,12 @@ import android.widget.Toast;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar loadingLY;
     RecyclerView JerusalemRV;
     SwipeRefreshLayout swipeRefreshLY;
-    FloatingActionButton addPost;
 
     List<ArticlesModel> articlesModels;
     NewsAdapter adapter;
@@ -53,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         loadingLY = findViewById(R.id.loadingLY);
         swipeRefreshLY = findViewById(R.id.swipeToRefreshLY);
         JerusalemRV = findViewById(R.id.JerusalemRV);
-        addPost = findViewById(R.id.add_post);
 
         JerusalemRV.setLayoutManager(new LinearLayoutManager(this));
 
@@ -70,14 +62,14 @@ public class MainActivity extends AppCompatActivity {
         adapter = new NewsAdapter(this, articlesModels);
         JerusalemRV.setAdapter(adapter);
 
-        addPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         fetchData(true);
+        WorkRequest workRequest =
+                new OneTimeWorkRequest.Builder(WorkManagerRequest.class)
+                        .build();
+
+        WorkManager.getInstance(this).enqueue(workRequest);
+
+
 
     }
 
