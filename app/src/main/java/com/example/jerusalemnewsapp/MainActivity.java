@@ -5,12 +5,19 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,6 +25,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,15 +34,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     ProgressBar loadingLY;
     RecyclerView JerusalemRV;
     SwipeRefreshLayout swipeRefreshLY;
-
+    FloatingActionButton floatingActionButton;
     List<ArticlesModel> articlesModels;
     NewsAdapter adapter;
+
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +57,18 @@ public class MainActivity extends AppCompatActivity {
         loadingLY = findViewById(R.id.loadingLY);
         swipeRefreshLY = findViewById(R.id.swipeToRefreshLY);
         JerusalemRV = findViewById(R.id.JerusalemRV);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
 
         JerusalemRV.setLayoutManager(new LinearLayoutManager(this));
+        sharedPref = getSharedPreferences("JerusalemShred", Context.MODE_PRIVATE);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AddPost.class));
+
+            }
+        });
 
         swipeRefreshLY.setColorSchemeColors(ContextCompat.getColor(this, R.color.teal_200));
         swipeRefreshLY.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -63,14 +84,27 @@ public class MainActivity extends AppCompatActivity {
         JerusalemRV.setAdapter(adapter);
 
         fetchData(true);
-        WorkRequest workRequest =
+
+
+//        WorkRequest periodicWork =new PeriodicWorkRequest.Builder(WorkManagerRequest.class,1, TimeUnit.HOURS)
+//        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(WorkManagerRequest.class, 10, TimeUnit.SECONDS)
+//                .build();
+        OneTimeWorkRequest workRequest =
                 new OneTimeWorkRequest.Builder(WorkManagerRequest.class)
+//                        .setInitialDelay(10, TimeUnit.SECONDS)
                         .build();
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueueUniqueWork("send_notification", ExistingWorkPolicy.KEEP,workRequest);
+//        workManager.enqueueUniquePeriodicWork("send_notification", ExistingPeriodicWorkPolicy.KEEP,periodicWork);
 
-        WorkManager.getInstance(this).enqueue(workRequest);
 
+    }
 
-
+    private void setPrefInt(String key, int value) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(key, value);
+        editor.apply();
+        editor.commit();
     }
 
     public void fetchData(boolean showLoading) {
