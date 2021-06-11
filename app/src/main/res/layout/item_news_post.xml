@@ -20,7 +20,7 @@
         android:textSize="20sp"/>
 
     <ImageView
-        android:id="@+id/post_photo"
+        android:id="@+id/posts_photo"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="20dp"

@@ -5,20 +5,22 @@
 
     <item
         android:id="@+id/action_video"
-        android:orderInCategory="100"
         android:title="Video"
-        app:showAsAction="never" />
+        android:icon="@drawable/video" />
 
     <item
-        android:id="@+id/action_information"
-        android:orderInCategory="100"
+        android:id="@+id/action_about_jerusalem"
         android:title="About jerusalem"
-        app:showAsAction="never" />
+        android:icon="@drawable/info" />
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="Settings"
-        app:showAsAction="never" />
+        android:icon="@drawable/settings"
+        android:title="Settings"/>
+
+    <item
+        android:id="@+id/action_exit"
+        android:icon="@drawable/exit"
+        android:title="Exit"/>
 
 </menu>

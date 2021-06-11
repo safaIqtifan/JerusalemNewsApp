@@ -1,4 +1,6 @@
-package com.example.jerusalemnewsapp;
+package com.example.jerusalemnewsapp.Model;
+
+import com.example.jerusalemnewsapp.Model.ArticlesModel;
 
 import java.util.List;
 

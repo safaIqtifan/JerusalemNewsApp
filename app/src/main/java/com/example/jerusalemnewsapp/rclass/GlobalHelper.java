@@ -1,4 +1,4 @@
-package com.example.jerusalemnewsapp;
+package com.example.jerusalemnewsapp.rclass;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

@@ -1,4 +1,4 @@
-package com.example.jerusalemnewsapp;
+package com.example.jerusalemnewsapp.rclass;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -14,6 +14,8 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.jerusalemnewsapp.MainActivity;
+import com.example.jerusalemnewsapp.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

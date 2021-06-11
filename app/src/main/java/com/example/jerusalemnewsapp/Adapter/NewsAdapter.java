@@ -1,4 +1,4 @@
-package com.example.jerusalemnewsapp;
+package com.example.jerusalemnewsapp.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,13 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.jerusalemnewsapp.Model.ArticlesModel;
+import com.example.jerusalemnewsapp.R;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    Context context;
-    List<ArticlesModel> list;
+    public Context context;
+    public List<ArticlesModel> list;
 
     public NewsAdapter(Context context, List<ArticlesModel> newsList) {
         this.context = context;
@@ -63,7 +65,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
             title = itemView.findViewById(R.id.titleEd);
             describction = itemView.findViewById(R.id.describctionEd);
-            post_photo = itemView.findViewById(R.id.post_photo);
+            post_photo = itemView.findViewById(R.id.posts_photo);
         }
     }
 }

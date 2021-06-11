@@ -1,4 +1,4 @@
-package com.example.jerusalemnewsapp;
+package com.example.jerusalemnewsapp.Model;
 
 public class ArticlesModel {
 

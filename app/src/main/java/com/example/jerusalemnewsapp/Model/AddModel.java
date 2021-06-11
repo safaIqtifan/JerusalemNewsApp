@@ -1,12 +1,12 @@
-package com.example.jerusalemnewsapp;
+package com.example.jerusalemnewsapp.Model;
 
 public class AddModel {
 
     public String post_id;
     public String user_id;
-    String title;
-    String description;
-    String photo;
+    public String title;
+    public String description;
+    public String photo;
 
     public AddModel() {
     }

@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.jerusalemnewsapp.Model.AddModel;
+import com.example.jerusalemnewsapp.rclass.Constant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -32,9 +34,9 @@ import java.util.UUID;
 public class AddPost extends AppCompatActivity {
 
     EditText titleEd ,describctionEd;
-    ImageView farmPhoto;
+    ImageView postPhoto;
     Button add ;
-    Uri farmPhotoUri;
+    Uri postPhotoUri;
     FirebaseFirestore fireStoreDB;
     String postId;
     FirebaseAuth auth;
@@ -49,7 +51,7 @@ public class AddPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
 
-        farmPhoto = findViewById(R.id.post_photo);
+        postPhoto = findViewById(R.id.post_photo);
         titleEd = findViewById(R.id.titleEd);
         describctionEd = findViewById(R.id.describctionEd);
         add = findViewById(R.id.add);
@@ -63,7 +65,7 @@ public class AddPost extends AppCompatActivity {
         addModel.title = titleStr;
         addModel.description = describctionStr;
 
-        farmPhoto.setOnClickListener(new View.OnClickListener() {
+        postPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -86,7 +88,7 @@ public class AddPost extends AppCompatActivity {
             public void onClick(View v) {
 //                userId = auth.getUid();
 //                addModel.user_id = userId;
-                uploadPhoto(farmPhotoUri);
+                uploadPhoto(postPhotoUri);
             }
         });
 
@@ -121,8 +123,8 @@ public class AddPost extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
 
-            farmPhotoUri = data.getData();
-            farmPhoto.setImageURI(farmPhotoUri);
+            postPhotoUri = data.getData();
+            postPhoto.setImageURI(postPhotoUri);
         }
     }
 
@@ -153,9 +155,9 @@ public class AddPost extends AppCompatActivity {
 
     private void sendpostToFirebase() {
 
-        postId = fireStoreDB.collection(Constants.POST).document().getId(); // this is auto genrat
+        postId = fireStoreDB.collection(Constant.POST).document().getId(); // this is auto genrat
 
-        fireStoreDB.collection(Constants.POST).document(postId).set(addModel, SetOptions.merge())
+        fireStoreDB.collection(Constant.POST).document(postId).set(addModel, SetOptions.merge())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
