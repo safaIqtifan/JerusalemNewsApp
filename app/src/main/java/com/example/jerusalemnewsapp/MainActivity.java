@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.example.jerusalemnewsapp.Adapter.NewsAdapter;
 import com.example.jerusalemnewsapp.Model.ArticlesModel;
 import com.example.jerusalemnewsapp.Model.ResultsModel;
+import com.example.jerusalemnewsapp.rclass.Constant;
 import com.example.jerusalemnewsapp.rclass.WorkManagerRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -38,7 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     ProgressBar loadingLY;
     RecyclerView JerusalemRV;
@@ -47,15 +49,38 @@ public class MainActivity extends AppCompatActivity {
     List<ArticlesModel> articlesModels;
     NewsAdapter adapter;
 
-    SharedPreferences sharedPref;
+//    SharedPreferences sharedPref;
+
+    Constant constant;
+    SharedPreferences.Editor editor;
+    SharedPreferences app_preferences;
+    int appTheme;
+    int themeColor;
+    int appColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appColor = app_preferences.getInt("color", 0);
+        appTheme = app_preferences.getInt("theme", 0);
+        themeColor = appColor;
+        constant.color = appColor;
+
+        if (themeColor == 0){
+            setTheme(Constant.theme);
+        }else if (appTheme == 0){
+            setTheme(Constant.theme);
+        }else{
+            setTheme(appTheme);
+        }
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Constant.color);
+
 
         AndroidNetworking.initialize(getApplicationContext());
 
@@ -65,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
         JerusalemRV.setLayoutManager(new LinearLayoutManager(this));
-        sharedPref = getSharedPreferences("JerusalemShred", Context.MODE_PRIVATE);
+        app_preferences = getSharedPreferences("JerusalemShred", Context.MODE_PRIVATE);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setPrefInt(String key, int value) {
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences.Editor editor = app_preferences.edit();
         editor.putInt(key, value);
         editor.apply();
         editor.commit();

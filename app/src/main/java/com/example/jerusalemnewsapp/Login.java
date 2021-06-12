@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseActivity {
     private EditText emailEd,passwordEd;
     private FirebaseAuth mAuth;
     private ProgressBar pB ;

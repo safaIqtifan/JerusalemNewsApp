@@ -16,8 +16,12 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.Switch;
 
 import com.example.jerusalemnewsapp.rclass.Constant;
+import com.example.jerusalemnewsapp.rclass.Methods;
+import com.example.jerusalemnewsapp.rclass.WorkManagerRequest;
 import com.turkialkhateeb.materialcolorpicker.ColorChooserDialog;
 import com.turkialkhateeb.materialcolorpicker.ColorListener;
 
@@ -25,91 +29,175 @@ public class Settings extends AppCompatActivity {
 
     SharedPreferences sharedPreferences, app_preferences;
     SharedPreferences.Editor editor;
-    Button button;
+    View selectColorBtn;
+    Button saveBtn;
+    Switch notificationS;
+    RadioButton smallRB, normalRB, largeRB;
     Methods methods;
 
     int appTheme;
-    int themeColor;
+    //    int themeColor;
     int appColor;
-    Constant constant;
+    float appFontScale;
+//    Constant constant;
+    WorkManagerRequest workManagerRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-
 
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
         appColor = app_preferences.getInt("color", 0);
         appTheme = app_preferences.getInt("theme", 0);
-        themeColor = appColor;
-        constant.color = appColor;
+//        themeColor = appColor;
+//        Constant.color = appColor;
 
-        if (themeColor == 0){
+        if (appTheme == 0) {
             setTheme(Constant.theme);
-        }else if (appTheme == 0){
-            setTheme(Constant.theme);
-        }else{
+        } else {
             setTheme(appTheme);
         }
         setContentView(R.layout.activity_settings);
 
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_setting);
         toolbar.setTitle("Settings");
         toolbar.setBackgroundColor(Constant.color);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         methods = new Methods();
-        button = (Button) findViewById(R.id.button_color);
+        selectColorBtn = findViewById(R.id.button_color);
+        saveBtn = findViewById(R.id.saveBtn);
+        smallRB = findViewById(R.id.smallRB);
+        normalRB = findViewById(R.id.normalRB);
+        largeRB = findViewById(R.id.largeRB);
+        notificationS = findViewById(R.id.notification_switch);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
 
         colorize();
 
-        button.setOnClickListener(new View.OnClickListener(){
+        selectColorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 ColorChooserDialog dialog = new ColorChooserDialog(Settings.this);
                 dialog.setTitle("Select");
                 dialog.setColorListener(new ColorListener() {
                     @Override
                     public void OnColorClick(View v, int color) {
+
+
+                        appColor = color;
                         colorize();
-                        Constant.color = color;
+//                        int styleId;
+                        appTheme = methods.setColorTheme(appColor);
 
-                        methods.setColorTheme();
-                        editor.putInt("color", color);
-                        editor.putInt("theme",Constant.theme);
-                        editor.commit();
-
-                        Intent intent = new Intent(Settings.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+//                        Intent intent = new Intent(Settings.this, MainActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(intent);
                     }
                 });
 
                 dialog.show();
             }
         });
+
+        smallRB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appFontScale = Constant.SMALL_FONT;
+            }
+        });
+
+        normalRB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appFontScale = Constant.NORMAL_FONT;
+            }
+        });
+
+        largeRB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appFontScale = Constant.LARGE_FONT;
+            }
+        });
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                setAppTheme();
+                setFontScale();
+
+                Intent intent = new Intent(Settings.this, SplashActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+        appFontScale = sharedPreferences.getFloat("font_size", Constant.NORMAL_FONT);
+        if (appFontScale == Constant.SMALL_FONT)
+            smallRB.setChecked(true);
+        else if (appFontScale == Constant.LARGE_FONT)
+            largeRB.setChecked(true);
+        else
+            normalRB.setChecked(true);
+
+
+        notificationS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WorkManagerRequest = new WorkManagerRequest(Settings.this);
+            }
+        });
+
+
+    }
+
+
+
+
+
+
+    private void setAppTheme() {
+
+        editor.putInt("color", appColor);
+        editor.putInt("theme", appTheme);
+        editor.apply();
+        editor.commit();
+
+    }
+
+    private void setFontScale() {
+
+        editor.putFloat("font_size", appFontScale);
+        editor.apply();
+        editor.commit();
+
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void colorize(){
+    private void colorize() {
         ShapeDrawable d = new ShapeDrawable(new OvalShape());
         d.setBounds(58, 58, 58, 58);
 
+        System.out.println("Log appColor " + appColor);
         d.getPaint().setStyle(Paint.Style.FILL);
-        d.getPaint().setColor(Constant.color);
+        d.getPaint().setColor(appColor);
 
-        button.setBackground(d);
+        selectColorBtn.setBackground(d);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 break;

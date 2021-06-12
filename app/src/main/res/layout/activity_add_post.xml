@@ -1,45 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddPost"
-    android:orientation="vertical"
-    android:background="@drawable/background"
-    android:layout_margin="20dp"
-    android:padding="20dp">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/post_photo"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/icon_camera"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/titleEd"
+        <include
+            android:id="@+id/include2"
+            layout="@layout/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="49dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/post_photo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/icon_camera" />
+
+            <EditText
+                android:id="@+id/titleEd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/box1"
+                android:hint="Title"
+                android:paddingStart="20dp" />
+
+            <EditText
+                android:id="@+id/describctionEd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/box1"
+                android:hint="describction"
+                android:inputType="textImeMultiLine"
+                android:paddingStart="20dp" />
+
+            <Button
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/loadingLY"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        android:paddingStart="20dp"
-        android:background="@drawable/box1"
-        android:layout_marginBottom="20dp"/>
+        android:layout_height="match_parent"
+        android:background="@color/black_trans"
+        android:visibility="gone">
 
-    <EditText
-        android:id="@+id/describctionEd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp"
-        android:inputType="textImeMultiLine"
-        android:background="@drawable/box1"
-        android:layout_marginBottom="20dp"
-        android:hint="describction"/>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
 
-    <Button
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"/>
-</LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

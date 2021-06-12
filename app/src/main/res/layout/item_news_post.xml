@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:text="describction"
         android:textSize="16sp"
-        android:paddingStart="20sp"/>
+        android:paddingStart="20dp"/>
 
 </LinearLayout>

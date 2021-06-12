@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-    <ScrollView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_setting"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollview">
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,15 +27,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3"
-                android:text="CUSTOM SETTINGS"
-                android:layout_marginLeft="7dp"
-                android:layout_marginBottom="2dp"
                 android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:layout_marginBottom="10dp"
+                android:text="CUSTOM SETTINGS"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
@@ -35,39 +42,117 @@
                 android:background="@color/colorSettings" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
                 android:id="@+id/llselectalarm"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_height="60dp"
+                android:background="@drawable/click_background"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@drawable/click_background">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginLeft="7dp"
                     android:text="Theme"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <Button
+                <View
+                    android:id="@+id/button_color"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="15dp"
-                    android:id="@+id/button_color"/>
+                    android:layout_marginRight="15dp" />
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:id="@+id/fontSizeLY"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/click_background"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/font_size"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start|top"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/smallRB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/small" />
+
+                    <RadioButton
+                        android:id="@+id/normalRB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/normal" />
+
+                    <RadioButton
+                        android:id="@+id/largeRB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/large" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:background="@color/colorSettings" />
 
+            <Switch
+                android:id="@+id/notification_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Switch"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorSettings" />
 
         </LinearLayout>
 
+    </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
-
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/save"
+        android:textColor="@color/white" />
 </LinearLayout>
