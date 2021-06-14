@@ -1,7 +1,11 @@
 package com.example.jerusalemnewsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -17,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.Switch;
 
 import com.example.jerusalemnewsapp.rclass.Constant;
 import com.example.jerusalemnewsapp.rclass.Methods;
@@ -25,13 +28,13 @@ import com.example.jerusalemnewsapp.rclass.WorkManagerRequest;
 import com.turkialkhateeb.materialcolorpicker.ColorChooserDialog;
 import com.turkialkhateeb.materialcolorpicker.ColorListener;
 
-public class Settings extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
-    SharedPreferences sharedPreferences, app_preferences;
+    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     View selectColorBtn;
     Button saveBtn;
-    Switch notificationS;
+    SwitchCompat notificationSW;
     RadioButton smallRB, normalRB, largeRB;
     Methods methods;
 
@@ -40,15 +43,14 @@ public class Settings extends AppCompatActivity {
     int appColor;
     float appFontScale;
 //    Constant constant;
-    WorkManagerRequest workManagerRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        appColor = app_preferences.getInt("color", 0);
-        appTheme = app_preferences.getInt("theme", 0);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appColor = sharedPreferences.getInt("color", 0);
+        appTheme = sharedPreferences.getInt("theme", 0);
 //        themeColor = appColor;
 //        Constant.color = appColor;
 
@@ -62,7 +64,7 @@ public class Settings extends AppCompatActivity {
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_setting);
         toolbar.setTitle("Settings");
-        toolbar.setBackgroundColor(Constant.color);
+        toolbar.setBackgroundColor(appColor);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,9 +76,8 @@ public class Settings extends AppCompatActivity {
         smallRB = findViewById(R.id.smallRB);
         normalRB = findViewById(R.id.normalRB);
         largeRB = findViewById(R.id.largeRB);
-        notificationS = findViewById(R.id.notification_switch);
+        notificationSW = findViewById(R.id.notification_switch);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
 
         colorize();
@@ -84,12 +85,12 @@ public class Settings extends AppCompatActivity {
         selectColorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ColorChooserDialog dialog = new ColorChooserDialog(Settings.this);
+
+                ColorChooserDialog dialog = new ColorChooserDialog(SettingsActivity.this);
                 dialog.setTitle("Select");
                 dialog.setColorListener(new ColorListener() {
                     @Override
                     public void OnColorClick(View v, int color) {
-
 
                         appColor = color;
                         colorize();
@@ -133,8 +134,9 @@ public class Settings extends AppCompatActivity {
 
                 setAppTheme();
                 setFontScale();
+                initNotification();
 
-                Intent intent = new Intent(Settings.this, SplashActivity.class);
+                Intent intent = new Intent(SettingsActivity.this, SplashActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
@@ -143,27 +145,27 @@ public class Settings extends AppCompatActivity {
 
 
         appFontScale = sharedPreferences.getFloat("font_size", Constant.NORMAL_FONT);
-        if (appFontScale == Constant.SMALL_FONT)
+        if (appFontScale == Constant.SMALL_FONT) {
             smallRB.setChecked(true);
-        else if (appFontScale == Constant.LARGE_FONT)
+        } else if (appFontScale == Constant.LARGE_FONT) {
             largeRB.setChecked(true);
-        else
+        } else {
             normalRB.setChecked(true);
+        }
 
+        boolean notificationEnabled = sharedPreferences.getBoolean("notifications_enable", true);
+        notificationSW.setChecked(notificationEnabled);
 
-        notificationS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WorkManagerRequest = new WorkManagerRequest(Settings.this);
-            }
-        });
+//        notificationSW.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                workManager.cancelUniqueWork("send_notification");
+//
+//            }
+//        });
 
 
     }
-
-
-
-
 
 
     private void setAppTheme() {
@@ -183,8 +185,29 @@ public class Settings extends AppCompatActivity {
 
     }
 
+    private void initNotification() {
+
+        WorkManager workManager = WorkManager.getInstance(SettingsActivity.this);
+        if (notificationSW.isChecked()) {
+            OneTimeWorkRequest workRequest =
+                    new OneTimeWorkRequest.Builder(WorkManagerRequest.class)
+//                        .setInitialDelay(10, TimeUnit.SECONDS)
+                            .build();
+
+            workManager.enqueueUniqueWork("send_notification", ExistingWorkPolicy.KEEP, workRequest);
+        } else {
+//            workManager.cancelUniqueWork("send_notification");
+            workManager.cancelAllWork();
+        }
+
+        editor.putBoolean("notifications_enable", notificationSW.isChecked());
+        editor.apply();
+        editor.commit();
+    }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void colorize() {
+
         ShapeDrawable d = new ShapeDrawable(new OvalShape());
         d.setBounds(58, 58, 58, 58);
 

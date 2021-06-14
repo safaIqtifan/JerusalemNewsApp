@@ -2,7 +2,6 @@ package com.example.jerusalemnewsapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
@@ -23,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.jerusalemnewsapp.Model.AddModel;
+import com.example.jerusalemnewsapp.Model.PostModel;
 import com.example.jerusalemnewsapp.rclass.Constant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,7 +36,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
-public class AddPost extends BaseActivity {
+public class AddPostActivity extends BaseActivity {
 
     EditText titleEd, describctionEd;
     RelativeLayout loadingLY;
@@ -46,7 +45,7 @@ public class AddPost extends BaseActivity {
     Uri postPhotoUri;
     //    String postId;
     String userId;
-    AddModel addModel;
+    PostModel postModel;
     FirebaseFirestore fireStoreDB;
     FirebaseAuth auth;
     StorageReference storageRef;
@@ -54,35 +53,29 @@ public class AddPost extends BaseActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    Constant constant;
     SharedPreferences.Editor editor;
     SharedPreferences app_preferences;
     int appTheme;
-    int themeColor;
     int appColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_post);
 
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
         appColor = app_preferences.getInt("color", 0);
         appTheme = app_preferences.getInt("theme", 0);
-        themeColor = appColor;
-        constant.color = appColor;
 
-        if (themeColor == 0) {
-            setTheme(Constant.theme);
-        } else if (appTheme == 0) {
+        if (appTheme == 0) {
             setTheme(Constant.theme);
         } else {
             setTheme(appTheme);
         }
+        setContentView(R.layout.activity_add_post);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Constant.color);
+        toolbar.setBackgroundColor(appColor);
 
 
         postPhoto = findViewById(R.id.post_photo);
@@ -91,7 +84,7 @@ public class AddPost extends BaseActivity {
         loadingLY = findViewById(R.id.loadingLY);
         add = findViewById(R.id.add);
 
-        addModel = new AddModel();
+        postModel = new PostModel();
 
         fireStoreDB = FirebaseFirestore.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -101,10 +94,12 @@ public class AddPost extends BaseActivity {
             public void onClick(View v) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
                     if (getApplicationContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_DENIED) {
                         String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permission, PERMISSION_CODE);
+
                     } else {
                         pickImageFromGallery();
                     }
@@ -178,8 +173,8 @@ public class AddPost extends BaseActivity {
             imgRef.getDownloadUrl().addOnCompleteListener(task -> {
 //                if (addModel == null)
 //                    addModel = new AddModel();
-                addModel.photo = task.getResult().toString();
-                System.out.println("Log uploaded url " + addModel.photo);
+                postModel.photo = task.getResult().toString();
+                System.out.println("Log uploaded url " + postModel.photo);
 //                checkData();
                 sendPostToFirebase();
             });
@@ -211,8 +206,8 @@ public class AddPost extends BaseActivity {
 
 //        if (addModel == null)
 //            addModel = new AddModel();
-        addModel.title = titleStr;
-        addModel.description = describctionStr;
+        postModel.title = titleStr;
+        postModel.description = describctionStr;
 
         uploadPhoto(postPhotoUri);
 
@@ -223,7 +218,7 @@ public class AddPost extends BaseActivity {
 
         String postId = fireStoreDB.collection(Constant.POST).document().getId(); // this is auto genrat
 
-        fireStoreDB.collection(Constant.POST).document(postId).set(addModel, SetOptions.merge())
+        fireStoreDB.collection(Constant.POST).document(postId).set(postModel, SetOptions.merge())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -246,32 +241,6 @@ public class AddPost extends BaseActivity {
                 });
     }
 
-//    private void sendCategoriesToFirebase() {
-//        if (catIndex < selectedCategories.size()) {
-//            CategoryModel categoryModel = selectedCategories.get(catIndex);
-//
-//            fireStoreDB.collection(Constants.FB_FARMS).document(farmId).collection(Constants.FB_CATEGORIES)
-//                    .document(String.valueOf(categoryModel.id)).set(categoryModel,
-//                    SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Void> task) {
-//                    if (task.isSuccessful()) {
-//                        catIndex++;
-//                        sendCategoriesToFirebase();
-//                    } else {
-//                        Toast.makeText(getActivity(), getString(R.string.fail_category), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
-//        } else {
-//            GlobalHelper.hideProgressDialog();
-//            Toast.makeText(getActivity(), getString(R.string.succes_add_farm), Toast.LENGTH_SHORT).show();
-//            Navigation.findNavController(viewGroup).popBackStack(R.id.navigation_home, false);
-//
-//        }
-//    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -287,18 +256,18 @@ public class AddPost extends BaseActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_video) {
-            startActivity(new Intent(AddPost.this, VideoActivity.class));
+            startActivity(new Intent(AddPostActivity.this, VideoActivity.class));
 //            getSupportFragmentManager().beginTransaction().replace(R.id.container,new VideoFragment()).commit();
             return true;
         }
 
         if (id == R.id.action_about_jerusalem) {
-            startActivity(new Intent(AddPost.this, AboutJerusalem.class));
+            startActivity(new Intent(AddPostActivity.this, AboutJerusalemActivity.class));
             return true;
         }
 
         if (id == R.id.action_settings) {
-            startActivity(new Intent(AddPost.this, Settings.class));
+            startActivity(new Intent(AddPostActivity.this, SettingsActivity.class));
             return true;
         }
 

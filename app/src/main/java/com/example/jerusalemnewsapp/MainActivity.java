@@ -1,6 +1,5 @@
 package com.example.jerusalemnewsapp;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +29,6 @@ import com.example.jerusalemnewsapp.Model.ArticlesModel;
 import com.example.jerusalemnewsapp.Model.ResultsModel;
 import com.example.jerusalemnewsapp.rclass.Constant;
 import com.example.jerusalemnewsapp.rclass.WorkManagerRequest;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,17 +43,15 @@ public class MainActivity extends BaseActivity {
     ProgressBar loadingLY;
     RecyclerView JerusalemRV;
     SwipeRefreshLayout swipeRefreshLY;
-    FloatingActionButton floatingActionButton;
+    //    FloatingActionButton floatingActionButton;
     List<ArticlesModel> articlesModels;
     NewsAdapter adapter;
 
 //    SharedPreferences sharedPref;
 
-    Constant constant;
     SharedPreferences.Editor editor;
     SharedPreferences app_preferences;
     int appTheme;
-    int themeColor;
     int appColor;
 
     @Override
@@ -65,21 +61,17 @@ public class MainActivity extends BaseActivity {
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
         appColor = app_preferences.getInt("color", 0);
         appTheme = app_preferences.getInt("theme", 0);
-        themeColor = appColor;
-        constant.color = appColor;
 
-        if (themeColor == 0){
+        if (appTheme == 0) {
             setTheme(Constant.theme);
-        }else if (appTheme == 0){
-            setTheme(Constant.theme);
-        }else{
+        } else {
             setTheme(appTheme);
         }
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Constant.color);
+        toolbar.setBackgroundColor(appColor);
 
 
         AndroidNetworking.initialize(getApplicationContext());
@@ -87,30 +79,30 @@ public class MainActivity extends BaseActivity {
         loadingLY = findViewById(R.id.loadingLY);
         swipeRefreshLY = findViewById(R.id.swipeToRefreshLY);
         JerusalemRV = findViewById(R.id.JerusalemRV);
-        floatingActionButton = findViewById(R.id.floatingActionButton);
+//        floatingActionButton = findViewById(R.id.floatingActionButton);
 
         JerusalemRV.setLayoutManager(new LinearLayoutManager(this));
         app_preferences = getSharedPreferences("JerusalemShred", Context.MODE_PRIVATE);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddPost.class));
-
-            }
-        });
+//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, AddPost.class));
+//
+//            }
+//        });
 
         swipeRefreshLY.setColorSchemeColors(ContextCompat.getColor(this, R.color.teal_200));
         swipeRefreshLY.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fetchData(false);
+                fetchData(true);
             }
         });
 
         articlesModels = new ArrayList<>();
 
-        adapter = new NewsAdapter(this, articlesModels);
+        adapter = new NewsAdapter(this, articlesModels, false);
         JerusalemRV.setAdapter(adapter);
 
         fetchData(true);
@@ -119,18 +111,28 @@ public class MainActivity extends BaseActivity {
 //        WorkRequest periodicWork =new PeriodicWorkRequest.Builder(WorkManagerRequest.class,1, TimeUnit.HOURS)
 //        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(WorkManagerRequest.class, 10, TimeUnit.SECONDS)
 //                .build();
-        OneTimeWorkRequest workRequest =
-                new OneTimeWorkRequest.Builder(WorkManagerRequest.class)
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean notificationEnabled = sharedPreferences.getBoolean("notifications_enable", true);
+
+        if (notificationEnabled) {
+            OneTimeWorkRequest workRequest =
+                    new OneTimeWorkRequest.Builder(WorkManagerRequest.class)
 //                        .setInitialDelay(10, TimeUnit.SECONDS)
-                        .build();
-        WorkManager workManager = WorkManager.getInstance(this);
-        workManager.enqueueUniqueWork("send_notification", ExistingWorkPolicy.KEEP,workRequest);
+                            .build();
+
+            WorkManager workManager = WorkManager.getInstance(this);
+            workManager.enqueueUniqueWork("send_notification", ExistingWorkPolicy.KEEP, workRequest);
+        }
+
+//        workManager.getWorkInfosByTag("syncTag");
+
 //        workManager.enqueueUniquePeriodicWork("send_notification", ExistingPeriodicWorkPolicy.KEEP,periodicWork);
 
 
     }
 
     private void setPrefInt(String key, int value) {
+
         SharedPreferences.Editor editor = app_preferences.edit();
         editor.putInt(key, value);
         editor.apply();
@@ -167,6 +169,7 @@ public class MainActivity extends BaseActivity {
                         articlesModels.addAll(response.articles);
 
                         adapter.list = articlesModels;
+                        adapter.getLocalFavorite();
                         adapter.notifyDataSetChanged();
                     }
 
@@ -193,6 +196,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public String formatDate(Object o, String inPattern, String outPattern) {
+
         SimpleDateFormat parser = new SimpleDateFormat(inPattern, Locale.ENGLISH);
         SimpleDateFormat formater = new SimpleDateFormat(outPattern, Locale.ENGLISH);
         try {
@@ -222,15 +226,14 @@ public class MainActivity extends BaseActivity {
             startActivity(new Intent(MainActivity.this, VideoActivity.class));
 //            getSupportFragmentManager().beginTransaction().replace(R.id.container,new VideoFragment()).commit();
             return true;
-        }
-
-        if (id == R.id.action_about_jerusalem) {
-            startActivity(new Intent(MainActivity.this, AboutJerusalem.class));
+        } else if (id == R.id.action_about_jerusalem) {
+            startActivity(new Intent(MainActivity.this, AboutJerusalemActivity.class));
             return true;
-        }
-
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this, Settings.class));
+        } else if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            return true;
+        } else if (id == R.id.action_favorite) {
+            startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
             return true;
         }
 

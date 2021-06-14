@@ -126,11 +126,11 @@
                 android:layout_marginBottom="20dp"
                 android:background="@color/colorSettings" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/notification_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Switch"
+                android:text="@string/notifications"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <View

@@ -1,6 +1,5 @@
 package com.example.jerusalemnewsapp;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -25,7 +24,7 @@ import com.google.android.exoplayer2.util.Util;
 
 public class VideoActivity extends BaseActivity {
 
-    private String videoURL = "https://firebasestorage.googleapis.com/v0/b/covid19status-d0525.appspot.com/o/Understanding%20the%20Virus%20that%20Causes%20COVID-19%2C%20Animation.mp4?alt=media&token=6ee74f79-386b-4060-8c6f-3962d4eb3a8f";
+    private String videoURL = "https://firebasestorage.googleapis.com/v0/b/jerusalemnews-app.appspot.com/o/%D9%85%D8%A7%20%D9%87%D9%8A%20%D8%A7%D9%84%D9%82%D8%AF%D8%B3%20_%20%D9%81%D9%84%D8%B3%D8%B7%D9%8A%D9%86%20%D9%81%D9%8A%20%D8%AF%D9%82%D9%8A%D9%82%D8%A9.mp4?alt=media&token=682e70e6-52f1-4dcf-aa83-1ff48292d169";
     PlayerView playerView;
     private SimpleExoPlayer player;
     private boolean playWhenReady = true;
@@ -66,7 +65,8 @@ public class VideoActivity extends BaseActivity {
 
 
         ActivityCompat.requestPermissions(VideoActivity.this,
-                new String[]{Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                new String[]{Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
                 100);
 
         playerView = findViewById(R.id.video_view);
@@ -95,6 +95,7 @@ public class VideoActivity extends BaseActivity {
     }
 
     private MediaSource buildMediaSource(Uri uri) {
+
         DataSource.Factory dataSourceFactory =
                 new DefaultDataSourceFactory(this, "exoplayer-codelab");
         return new ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -135,6 +136,7 @@ public class VideoActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -154,12 +156,12 @@ public class VideoActivity extends BaseActivity {
         }
 
         if (id == R.id.action_about_jerusalem) {
-            startActivity(new Intent(VideoActivity.this, AboutJerusalem.class));
+            startActivity(new Intent(VideoActivity.this, AboutJerusalemActivity.class));
             return true;
         }
 
         if (id == R.id.action_settings) {
-            startActivity(new Intent(VideoActivity.this, Settings.class));
+            startActivity(new Intent(VideoActivity.this, SettingsActivity.class));
             return true;
         }
 

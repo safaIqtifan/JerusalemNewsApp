@@ -1,15 +1,16 @@
 package com.example.jerusalemnewsapp.Model;
 
-public class AddModel {
+public class
+PostModel {
 
     public String title;
     public String description;
     public String photo;
 
-    public AddModel() {
+    public PostModel() {
     }
 
-    public AddModel(String title, String description) {
+    public PostModel(String title, String description) {
         this.title = title;
         this.description = description;
     }

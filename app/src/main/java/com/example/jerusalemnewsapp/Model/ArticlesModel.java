@@ -1,7 +1,10 @@
 package com.example.jerusalemnewsapp.Model;
 
-public class ArticlesModel {
+import io.realm.RealmObject;
 
+public class ArticlesModel extends RealmObject {
+
+    public  String publishedAt;
     public  String title;
     public  String description;
     public  String urlToImage;

@@ -87,6 +87,7 @@ public class WorkManagerRequest extends Worker {
                                         .setInitialDelay(10, TimeUnit.SECONDS)
                                         .build();
                         WorkManager workManager = WorkManager.getInstance(context);
+//                        workManager.getWorkInfosByTag("syncTag");
                         workManager.enqueueUniqueWork("send_notification", ExistingWorkPolicy.KEEP,workRequest);
                     }
 
@@ -100,6 +101,7 @@ public class WorkManagerRequest extends Worker {
     }
 
     public String getDateOnlyNowString() {
+
         DateFormat parser = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = new Date();
         try {
@@ -121,8 +123,11 @@ public class WorkManagerRequest extends Worker {
         String NOTIFICATION_CHANNEL_ID = "Que Notifications";
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_HIGH);
+
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                    "My Notifications", NotificationManager.IMPORTANCE_HIGH);
 
             // Configure the notification channel.
             notificationChannel.setDescription("My Notifications Service");

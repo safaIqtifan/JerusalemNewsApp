@@ -11,4 +11,7 @@
     <string name="large">Large</string>
     <string name="normal">Normal</string>
     <string name="save">Save</string>
+    <string name="notifications">Notifications</string>
+    <string name="fail_get_data">Fail to get data</string>
+    <string name="favorite">Favorites</string>
 </resources>
