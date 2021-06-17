@@ -1,8 +1,5 @@
 package com.example.jerusalemnewsapp;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +8,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.example.jerusalemnewsapp.rclass.Constant;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -31,36 +31,29 @@ public class VideoActivity extends BaseActivity {
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
-    Constant constant;
-    SharedPreferences.Editor editor;
     SharedPreferences app_preferences;
     int appTheme;
-    int themeColor;
     int appColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video);
 
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
         appColor = app_preferences.getInt("color", 0);
         appTheme = app_preferences.getInt("theme", 0);
-        themeColor = appColor;
-        constant.color = appColor;
 
-        if (themeColor == 0){
-            setTheme(Constant.theme);
-        }else if (appTheme == 0){
+        if (appTheme == 0){
             setTheme(Constant.theme);
         }else{
             setTheme(appTheme);
         }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_video);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.videos));
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Constant.color);
+        toolbar.setBackgroundColor(appColor);
 
 
 
@@ -69,11 +62,15 @@ public class VideoActivity extends BaseActivity {
                         Manifest.permission.READ_EXTERNAL_STORAGE},
                 100);
 
-        playerView = findViewById(R.id.video_view);
+        playerView = findViewById(R.id.videoPlayer);
+
+        initializePlayer();
+
     }
 
     private void initializePlayer() {
         player = ExoPlayerFactory.newSimpleInstance(this);
+//        player = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
 
         Uri uri = Uri.parse(videoURL);
@@ -105,15 +102,15 @@ public class VideoActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT >= 24) {
-            initializePlayer();
-        }
+//        if (Util.SDK_INT >= 24) {
+
+//        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT < 24 || player == null)) {
+        if (/*Util.SDK_INT < 24 ||*/ player == null) {
             initializePlayer();
         }
     }

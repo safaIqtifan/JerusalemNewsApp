@@ -34,11 +34,11 @@ public class Methods {
             appTheme = R.style.AppTheme_red;
         else if (color == Constant.COLORS.pink.value)
             appTheme = R.style.AppTheme_pink;
-        else if (color == Constant.COLORS.Purple.value)
+        else if (color == Constant.COLORS.DeepPurple.value)
             appTheme = R.style.AppTheme_darpink;
-        else if (color == Constant.COLORS.Purple.value)
+        else if (color == Constant.COLORS.Indigo.value)
             appTheme = R.style.AppTheme_violet;
-        else if (color == Constant.COLORS.Purple.value)
+        else if (color == Constant.COLORS.Blue.value)
             appTheme = R.style.AppTheme_darpink;
         else if (color == Constant.COLORS.Purple.value)
             appTheme = R.style.AppTheme_darpink;
