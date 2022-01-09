@@ -63,6 +63,7 @@ public class FavoritesActivity extends BaseActivity {
         } else {
             setTheme(appTheme);
         }
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,13 +78,6 @@ public class FavoritesActivity extends BaseActivity {
         JerusalemRV.setLayoutManager(new LinearLayoutManager(this));
         app_preferences = getSharedPreferences("JerusalemShred", Context.MODE_PRIVATE);
 
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, AddPost.class));
-//
-//            }
-//        });
         swipeToRefreshLY.setEnabled(false);
 
         articlesModels = RootApplication.dbRealm.where(ArticlesModel.class).findAll();

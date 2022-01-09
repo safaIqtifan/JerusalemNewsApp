@@ -1,7 +1,6 @@
 package com.example.jerusalemnewsapp.Model;
 
-public class
-PostModel {
+public class PostModel {
 
     public String title;
     public String description;

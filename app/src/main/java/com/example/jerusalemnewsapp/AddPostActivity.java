@@ -225,16 +225,10 @@ public class AddPostActivity extends BaseActivity {
                         loadingLY.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
 
-                            //sendCategoriesToFirebase();
-//                            Intent intent = new Intent(AddPost.this,MainActivity.class);
-//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                            startActivity(intent);
-//                            startActivity(new Intent(AddPost.this, MainActivity.class));
                             Toast.makeText(getApplicationContext(), getString(R.string.success_add_post), Toast.LENGTH_SHORT).show();
                             onBackPressed();
 
                         } else {
-//                    GlobalHelper.hideProgressDialog();
                             Toast.makeText(getApplicationContext(), getString(R.string.fail_add_post), Toast.LENGTH_SHORT).show();
                         }
                     }

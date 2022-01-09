@@ -104,7 +104,6 @@ public class AboutJerusalemActivity extends BaseActivity {
             loadingLY.setVisibility(View.VISIBLE);
             swipeRefreshLY.setVisibility(View.GONE);
         }
-
         fireStoreDB.collection(Constant.POST).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -112,13 +111,12 @@ public class AboutJerusalemActivity extends BaseActivity {
                 swipeRefreshLY.setRefreshing(false);
                 if (task.isSuccessful()) {
                     swipeRefreshLY.setVisibility(View.VISIBLE);
-
                     postModelsList.clear();
+
                     for (DocumentSnapshot document : task.getResult().getDocuments()) {
                         PostModel postModel = document.toObject(PostModel.class);
                         postModelsList.add(postModel);
                     }
-
                     adapter.list = postModelsList;
                     adapter.notifyDataSetChanged();
 
@@ -127,8 +125,6 @@ public class AboutJerusalemActivity extends BaseActivity {
                 }
             }
         });
-
-
     }
 
 

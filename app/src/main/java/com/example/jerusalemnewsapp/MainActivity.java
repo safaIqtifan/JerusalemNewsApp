@@ -43,11 +43,8 @@ public class MainActivity extends BaseActivity {
     ProgressBar loadingLY;
     RecyclerView JerusalemRV;
     SwipeRefreshLayout swipeRefreshLY;
-    //    FloatingActionButton floatingActionButton;
     List<ArticlesModel> articlesModels;
     NewsAdapter adapter;
-
-//    SharedPreferences sharedPref;
 
     SharedPreferences.Editor editor;
     SharedPreferences app_preferences;
@@ -79,18 +76,9 @@ public class MainActivity extends BaseActivity {
         loadingLY = findViewById(R.id.loadingLY);
         swipeRefreshLY = findViewById(R.id.swipeToRefreshLY);
         JerusalemRV = findViewById(R.id.JerusalemRV);
-//        floatingActionButton = findViewById(R.id.floatingActionButton);
 
         JerusalemRV.setLayoutManager(new LinearLayoutManager(this));
         app_preferences = getSharedPreferences("JerusalemShred", Context.MODE_PRIVATE);
-
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, AddPost.class));
-//
-//            }
-//        });
 
         swipeRefreshLY.setColorSchemeColors(ContextCompat.getColor(this, R.color.teal_200));
         swipeRefreshLY.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -184,6 +172,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public String getDateOnlyNowString() {
+
         DateFormat parser = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = new Date();
         try {
